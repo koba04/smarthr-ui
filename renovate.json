@@ -1,0 +1,40 @@
+{
+  "extends": [
+    ":timezone(Asia/Tokyo)",
+    "group:monorepos",
+    ":widenPeerDependencies"
+  ],
+  "npm": {
+    "extends": [
+      ":noUnscheduledUpdates",
+      ":separatePatchReleases",
+      ":unpublishSafe",
+      "helpers:disableTypesNodeMajor"
+    ],
+    "schedule": "before 12am on Friday",
+    "rangeStrategy": "bump",
+    "semanticCommitType": "chore",
+    "packageRules": [
+      {
+        "depTypeList": [
+          "devDependencies"
+        ],
+        "updateTypes": [
+          "patch"
+        ],
+        "automerge": true
+      },    
+      {
+        "groupName": "ESLint and Prettier",
+        "packageNames": [
+          "eslint",
+          "prettier"
+        ],
+        "packagePatterns": [
+          "^eslint-",
+          "^prettier-"
+        ]
+      }
+    ]
+  }
+}
