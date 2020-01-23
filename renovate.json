@@ -7,7 +7,6 @@
   "npm": {
     "extends": [
       ":noUnscheduledUpdates",
-      ":separatePatchReleases",
       ":unpublishSafe",
       "helpers:disableTypesNodeMajor"
     ],
