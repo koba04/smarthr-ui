@@ -11,7 +11,7 @@
       ":unpublishSafe",
       "helpers:disableTypesNodeMajor"
     ],
-    "schedule": "before 12am on Monday",
+    "schedule": "before 12am on Friday",
     "rangeStrategy": "bump",
     "semanticCommitType": "chore",
     "packageRules": [
