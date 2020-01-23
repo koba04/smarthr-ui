@@ -1,7 +1,7 @@
 {
   "extends": [
     ":timezone(Asia/Tokyo)",
-    ":group:monorepos",
+    "group:monorepos",
     ":widenPeerDependencies"
   ],
   "npm": {
