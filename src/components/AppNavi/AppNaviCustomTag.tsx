@@ -12,7 +12,7 @@ export type AppNaviCustomTagProps = {
   icon?: IconProps['name']
   current?: boolean
   disabled?: boolean
-} & { [key: string]: any }
+} & Record<string, unknown>
 
 const Active = styled.div<{ themes: Theme }>`
   ${buttonStyle.active}

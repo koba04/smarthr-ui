@@ -9,11 +9,15 @@ import { AppNaviAnchor, AppNaviAnchorProps } from './AppNaviAnchor'
 import { AppNaviDropdown, AppNaviDropdownProps } from './AppNaviDropdown'
 import { AppNaviCustomTag, AppNaviCustomTagProps } from './AppNaviCustomTag'
 
+export type ButtonsProps =
+  | (AppNaviButtonProps & { type: 'button' })
+  | (AppNaviAnchorProps & { type: 'anchor' })
+  | (AppNaviDropdownProps & { type: 'dropdown' })
+  | (AppNaviCustomTagProps & { type: 'custom' })
+
 interface Props {
   label?: string
-  buttons?: Array<
-    AppNaviButtonProps | AppNaviAnchorProps | AppNaviDropdownProps | AppNaviCustomTagProps
-  >
+  buttons?: ButtonsProps[]
   children?: ReactNode
 }
 
@@ -27,65 +31,68 @@ export const AppNavi: FC<Props> = ({ label, buttons, children = null }) => {
       {buttons && (
         <Buttons themes={theme}>
           {buttons.map((button, i) => {
-            if ('href' in button) {
-              return (
-                <li key={i}>
-                  <AppNaviAnchor
-                    href={button.href}
-                    icon={button.icon}
-                    current={button.current}
-                    disabled={button.disabled}
-                  >
-                    {button.children}
-                  </AppNaviAnchor>
-                </li>
-              )
+            switch (button.type) {
+              case 'anchor': {
+                return (
+                  <li key={i}>
+                    <AppNaviAnchor
+                      href={button.href}
+                      icon={button.icon}
+                      current={button.current}
+                      disabled={button.disabled}
+                    >
+                      {button.children}
+                    </AppNaviAnchor>
+                  </li>
+                )
+              }
+              case 'dropdown': {
+                return (
+                  <li key={i}>
+                    <AppNaviDropdown
+                      dropdownContent={button.dropdownContent}
+                      icon={button.icon}
+                      current={button.current}
+                      disabled={button.disabled}
+                    >
+                      {button.children}
+                    </AppNaviDropdown>
+                  </li>
+                )
+              }
+              case 'button': {
+                return (
+                  <li key={i}>
+                    <AppNaviButton
+                      icon={button.icon}
+                      current={button.current}
+                      disabled={button.disabled}
+                      onClick={button.onClick}
+                    >
+                      {button.children}
+                    </AppNaviButton>
+                  </li>
+                )
+              }
+              case 'custom': {
+                const { tag, icon, current, children: buttonChildren, ...props } = button
+                return (
+                  <li key={i}>
+                    <AppNaviCustomTag
+                      tag={tag}
+                      icon={icon}
+                      current={current}
+                      disabled={button.disabled}
+                      {...props}
+                    >
+                      {buttonChildren}
+                    </AppNaviCustomTag>
+                  </li>
+                )
+              }
             }
-
-            if ('dropdownContent' in button) {
-              return (
-                <li key={i}>
-                  <AppNaviDropdown
-                    dropdownContent={button.dropdownContent}
-                    icon={button.icon}
-                    current={button.current}
-                    disabled={button.disabled}
-                  >
-                    {button.children}
-                  </AppNaviDropdown>
-                </li>
-              )
-            }
-
-            if ('tag' in button) {
-              const { tag, icon, current, children: buttonChildren, ...props } = button
-              return (
-                <li key={i}>
-                  <AppNaviCustomTag
-                    tag={tag}
-                    icon={icon}
-                    current={current}
-                    disabled={button.disabled}
-                    {...props}
-                  >
-                    {buttonChildren}
-                  </AppNaviCustomTag>
-                </li>
-              )
-            }
-
-            return (
-              <li key={i}>
-                <AppNaviButton
-                  icon={button.icon}
-                  current={button.current}
-                  disabled={button.disabled}
-                  onClick={button.onClick}
-                >
-                  {button.children}
-                </AppNaviButton>
-              </li>
-            )
+            // @ts-expect-error This is unreachable, for a runtime error
+            throw new Error(`${button.type} is not supported`)
           })}
         </Buttons>
       )}

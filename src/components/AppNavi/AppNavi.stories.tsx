@@ -3,7 +3,7 @@ import { storiesOf } from '@storybook/react'
 import React, { FC, ReactNode } from 'react'
 import styled from 'styled-components'
 
-import { AppNavi } from './AppNavi'
+import { AppNavi, ButtonsProps } from './AppNavi'
 import readme from './README.md'
 
 const List = styled.ul`
@@ -36,24 +36,29 @@ const Link: FC<{ to: string; children: ReactNode; disabled?: boolean; className?
     {children}
   </a>
 )
-const buttons = [
+
+const buttons: ButtonsProps[] = [
   {
+    type: 'button' as const,
     children: 'カレントボタン',
     icon: 'fa-file' as const,
     current: true,
     onClick: action('click!!'),
   },
   {
+    type: 'button' as const,
     children: 'ボタン',
     icon: 'fa-user-alt' as const,
     onClick: action('click!!'),
   },
   {
+    type: 'anchor' as const,
     children: 'アンカー',
     icon: 'fa-cog' as const,
     href: 'http://www.google.com',
   },
   {
+    type: 'dropdown' as const,
     children: 'ドロップダウン',
     icon: 'fa-chart-pie' as const,
     dropdownContent: (
@@ -74,6 +79,7 @@ const buttons = [
     ),
   },
   {
+    type: 'custom' as const,
     children: 'カスタムタグ',
     icon: 'fa-birthday-cake' as const,
     tag: Link,
