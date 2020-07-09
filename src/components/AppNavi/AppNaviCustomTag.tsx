@@ -14,6 +14,13 @@ export type AppNaviCustomTagProps = {
   disabled?: boolean
 } & { [key: string]: any }
 
+const Active = styled.div<{ themes: Theme }>`
+  ${buttonStyle.active}
+`
+const InActive = styled.div<{ themes: Theme }>`
+  ${buttonStyle.inactive}
+`
+
 export const AppNaviCustomTag: FC<AppNaviCustomTagProps> = ({
   children,
   tag,
@@ -26,16 +33,9 @@ export const AppNaviCustomTag: FC<AppNaviCustomTagProps> = ({
   const iconComponent = getIconComponent(theme, { icon, current, disabled })
   const additionalProps = disabled ? { disabled: true, className: 'disabled' } : {}
 
-  const Active = styled(tag)<{ themes: Theme }>`
-    ${buttonStyle.active}
-  `
-  const InActive = styled(tag)<{ themes: Theme }>`
-    ${buttonStyle.inactive}
-  `
-
   if (current) {
     return (
-      <Active themes={theme} aria-selected="true" {...props} {...additionalProps}>
+      <Active as={tag} themes={theme} aria-selected="true" {...props} {...additionalProps}>
         {iconComponent}
         {children}
       </Active>
@@ -43,7 +43,7 @@ export const AppNaviCustomTag: FC<AppNaviCustomTagProps> = ({
   }
 
   return (
-    <InActive themes={theme} {...props} {...additionalProps}>
+    <InActive as={tag} themes={theme} {...props} {...additionalProps}>
       {iconComponent}
       {children}
     </InActive>
